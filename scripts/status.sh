@@ -37,7 +37,10 @@ if [ ! -z "$BOT_RESPONSE_MESSAGE" ]; then
 fi
 
 echo ""
-echo "💡 Comandos rápidos:"
-echo "   ./activate.sh   - Activar bot"
-echo "   ./deactivate.sh - Desactivar bot"
-echo "   ./status.sh     - Ver estado" 
+echo "💡 Comandos npm disponibles:"
+echo "   npm run start      - Iniciar bot"
+echo "   npm run activate   - Activar bot"
+echo "   npm run deactivate - Desactivar bot"
+echo "   npm run status     - Ver estado"
+echo "   npm run logs       - Ver logs"
+echo "   npm run dev        - Modo desarrollo" 

@@ -7,8 +7,10 @@
     "start": "bash scripts/start.sh",
     "activate": "bash scripts/activate.sh",
     "deactivate": "bash scripts/deactivate.sh",
-    "setup": "bash scripts/setup.sh",
-    "status": "bash scripts/status.sh"
+    "status": "bash scripts/status.sh",
+    "logs": "bash scripts/logs.sh",
+    "dev": "nodemon index.js",
+    "setup": "bash scripts/setup.sh"
   },
   "repository": {
     "type": "git",
@@ -23,14 +25,16 @@
   "author": "David Suárez González <davidsuarezgnz@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@whiskeysockets/baileys": "^4.0.0",
-    "@hapi/boom": "^10.0.0",
-    "dotenv": "^16.0.0",
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.18",
+    "baileys": "^6.7.18",
     "chokidar": "^3.5.0",
+    "dotenv": "^16.0.0",
     "pino": "^8.0.0",
-    "pino-pretty": "^9.0.0"
+    "pino-pretty": "^9.4.1",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.0"
+    "nodemon": "^3.1.10"
   }
 }

@@ -1,21 +1,20 @@
 // src/services/whatsapp.js
-const { default: makeWASocket } = require('@whiskeysockets/baileys');
+const { makeWASocket, DisconnectReason } = require('baileys');
+const { Boom } = require('@hapi/boom');
 
 /**
- * Crea y configura una instancia de socket de WhatsApp (Baileys)
+ * Inicializa y devuelve el socket de WhatsApp con Baileys
  * @param {Object} options
- * @param {boolean} [options.printQR=true] - Mostrar el QR en terminal
- * @returns {import('@whiskeysockets/baileys').Socket}
+ * @param {boolean} [options.printQR=true] - Mostrar QR en terminal
+ * @returns {import('baileys').Socket}
  */
 function initSocket({ printQR = true } = {}) {
-  return makeWASocket({
+  const sock = makeWASocket({
+    auth: { creds: {}, keys: {} },
     printQRInTerminal: printQR,
-    auth: {
-      creds: {},
-      keys: {}
-    },
     defaultQueryTimeoutMs: undefined
   });
+  return sock;
 }
 
 module.exports = { initSocket };

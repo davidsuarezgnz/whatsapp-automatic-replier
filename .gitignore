@@ -6,6 +6,7 @@ node_modules/
 
 # Sesión de WhatsApp (Baileys)
 auth_info.json
+auth_info_baileys/
 .wwebjs_auth/
 
 # Logs
