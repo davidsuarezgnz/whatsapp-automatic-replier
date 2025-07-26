@@ -25,3 +25,7 @@ Thumbs.db
 # Archivos de build
 dist/
 build/ 
+
+# Bot configurations
+bot-control.json
+bot-status.txt

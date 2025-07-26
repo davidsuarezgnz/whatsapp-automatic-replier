@@ -42,17 +42,17 @@ module.exports = {
     // Personaliza los mensajes que envía el bot
     messages: {
         // Mensaje cuando se activa el bot
-        activated: '✅ Bot ACTIVADO discretamente',
+        activated: 'Bot ACTIVADO',
         
         // Mensaje cuando se desactiva el bot
-        deactivated: '❌ Bot DESACTIVADO discretamente',
+        deactivated: 'Bot DESACTIVADO',
         
         // Mensaje de estado (función que recibe parámetros)
         status: (isActive, groupInfo, responseMessage) => 
-            `🤖 Estado del Bot:\n• Estado: ${isActive ? 'ACTIVADO' : 'DESACTIVADO'}\n• Grupo: ${groupInfo}\n• Respuesta: "${responseMessage}"`,
+            `Estado del Bot:\n• Estado: ${isActive ? 'ACTIVADO' : 'DESACTIVADO'}\n• Grupo: ${groupInfo}\n• Respuesta: "${responseMessage}"`,
         
         // Mensaje de ayuda
-        help: `📋 Control discreto disponible:\n\n` +
+        help: `Control discreto disponible:\n\n` +
               `• !on - Activar bot discretamente\n` +
               `• !off - Desactivar bot discretamente\n\n` +
               `El bot responde automáticamente "YO" cuando detecta un sticker.`,

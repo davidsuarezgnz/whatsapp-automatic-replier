@@ -1,22 +1,36 @@
 {
-  "name": "whatsapp-automatic-replier",
+  "name": "whatsapp-auto-bot",
   "version": "1.0.0",
-  "description": "Bot automático para responder 'YO' a stickers de pedidos en WhatsApp",
-  "main": "index.js",
+  "description": "Bot de WhatsApp automático para respuestas en grupos",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "bash scripts/start.sh",
+    "activate": "bash scripts/activate.sh",
+    "deactivate": "bash scripts/deactivate.sh",
+    "setup": "bash scripts/setup.sh",
+    "status": "bash scripts/status.sh"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tu-usuario/whatsapp-auto-bot.git"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "automation"
+  ],
+  "author": "David Suárez González <davidsuarezgnz@gmail.com>",
+  "license": "MIT",
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.6.0",
-    "@hapi/boom": "^10.0.1",
-    "qrcode-terminal": "^0.12.0",
-    "dotenv": "^16.3.1"
+    "@whiskeysockets/baileys": "^4.0.0",
+    "@hapi/boom": "^10.0.0",
+    "dotenv": "^16.0.0",
+    "chokidar": "^3.5.0",
+    "pino": "^8.0.0",
+    "pino-pretty": "^9.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
-  },
-  "keywords": ["whatsapp", "bot", "automation"],
-  "author": "",
-  "license": "MIT"
-} 
+    "nodemon": "^2.0.0"
+  }
+}

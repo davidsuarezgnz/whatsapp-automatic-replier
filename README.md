@@ -1,153 +1,127 @@
-# Bot Automático de WhatsApp - Respondedor de Stickers
+# WhatsApp Auto Bot
 
-Este bot automáticamente responde "YO" cuando detecta un sticker en un grupo de WhatsApp, perfecto para restaurantes que publican stickers cuando tienen pedidos. **Usa Baileys para mayor eficiencia y discreción.**
+Bot de WhatsApp automático para responder con un mensaje (por defecto **YO**) al recibir un sticker en un grupo específico.
 
-## 🚀 Características
+---
 
-- ✅ Responde automáticamente "YO" a stickers
-- ✅ **Control discreto** - Sin comandos visibles en el grupo
-- ✅ Activación/desactivación en tiempo real
-- ✅ Funciona en grupos específicos o todos los grupos
-- ✅ **Usa Baileys** - Más eficiente que whatsapp-web.js
-- ✅ Logs detallados en consola
+## 📖 Descripción
 
-## 📋 Requisitos
+Este proyecto implementa un bot de WhatsApp usando la librería [Baileys](https://github.com/whiskeysockets/baileys) para:
 
-- Node.js (versión 14 o superior)
-- WhatsApp (no necesita WhatsApp Web)
+- Detectar stickers en un grupo de WhatsApp.
+- Responder automáticamente con un texto configurado (por defecto `YO`).
+- Permitir activar o desactivar el bot desde el grupo o desde un chat privado de administrador.
+- Mantener configuración en archivos JSON/TXT y variables de entorno.
+
+---
+
+## ⚙️ Requisitos
+
+- **Node.js** v16 o superior.
+- **npm**.
+- Cuenta de WhatsApp configurada con Scanner QR (a través de Baileys).
+- Acceso a la terminal/bash.
+
+---
 
 ## 🛠️ Instalación
 
-1. **Clona o descarga este proyecto**
+1. Clona el repositorio:
    ```bash
-   git clone <tu-repositorio>
-   cd whatsapp-automatic-replier
+   git clone https://github.com/tu-usuario/whatsapp-auto-bot.git
+   cd whatsapp-auto-bot
    ```
-
-2. **Instala las dependencias**
+2. Ejecuta el script de setup:
    ```bash
-   npm install
+   npm run setup
    ```
 
-3. **Configura las variables de entorno (opcional)**
+---
+
+## 🗂️ Estructura del proyecto
+
+```
+|-- .wwebjs_auth/        # Credenciales de WhatsApp (Gitignored)
+|-- bot-control.json     # Configuración dinámica (isActive, message…)
+|-- bot-status.txt       # Estado ACTIVE/INACTIVE
+|-- .env.example         # Ejemplo de variables de entorno
+|-- package.json
+|-- README.md
+|-- src/
+|   |-- config/loader.js     # Carga y recarga de config
+|   |-- handlers/
+|   |   |-- connection.js    # Reconexión y logs
+|   |   |-- commands.js      # !on / !off
+|   |   `-- messages.js      # Lógica de sticker → respuesta
+|   |-- services/whatsapp.js # Wrapper de Baileys
+|   |-- utils/logger.js      # Logger con pino
+|   `-- index.js             # Entrypoint del bot
+|-- scripts/
+    |-- activate.sh
+    |-- deactivate.sh
+    |-- setup.sh
+    |-- start.sh
+    `-- status.sh
+```
+
+---
+
+## 📑 Configuración
+
+Copia `.env.example` a `.env` y completa los valores:
+
+```dotenv
+# ¿El bot inicia activo? true|false
+BOT_ACTIVE=true
+
+# Mensaje que envía al detectar un sticker
+BOT_RESPONSE_MESSAGE=YO
+
+# ID del grupo y JID admin separados por coma
+TARGET_GROUP_ID=1234567890-0987654321@g.us,5511991234567@s.whatsapp.net
+
+# Permitir comandos !on/!off en grupo o privado
+ENABLE_COMMANDS=true
+
+# Nivel de logs: debug|info|warn|error
+LOG_LEVEL=info
+```
+
+- **TARGET_GROUP_ID**: formato `groupJID,adminJID`. Usa tu `groupJID` (p.ej. `1234567890-0987654321@g.us`) y tu número personal con sufijo `@s.whatsapp.net`.
+
+---
+
+## 🚀 Scripts disponibles
+
+| Comando              | Descripción                                  |
+|----------------------|----------------------------------------------|
+| `npm run setup`      | Instala dependencias y prepara `.env`        |
+| `npm run start`      | Inicia el bot                                |
+| `npm run activate`   | Activa el bot (`ACTIVE` en bot-status.txt)   |
+| `npm run deactivate` | Desactiva el bot (`INACTIVE` en bot-status.txt) |
+| `npm run status`     | Muestra el estado actual del bot             |
+
+---
+
+## 📦 Uso
+
+1. **Inicia** el bot:
    ```bash
-   cp env.example .env
+   npm run start
    ```
-   
-   Edita el archivo `.env` y agrega el ID del grupo donde quieres que funcione el bot:
-   ```
-   TARGET_GROUP_ID=123456789@c.us
-   ```
+2. **Escanea** el QR si es la primera vez.
+3. Envía un sticker en el grupo configurado.
+4. El bot responderá con el mensaje configurado.
+5. Para **activar/desactivar**, usa `!on` o `!off` en el grupo o envía estos comandos en tu chat privado de administrador.
 
-## 🚀 Uso
+---
 
-### Opción 1: Script de inicio (Recomendado)
-```bash
-./start.sh
-```
+## 🤝 Contribuciones
 
-### Opción 2: Comando directo
-```bash
-npm start
-```
+Si quieres mejorar este proyecto, abre un _issue_ o _pull request_. ¡Todas las contribuciones son bienvenidas!
 
-### Escaneo del código QR
-- Se mostrará un código QR en la terminal
-- Escanéalo con WhatsApp en tu teléfono
-- El bot se conectará automáticamente
-
-## 🎛️ Control Discreto
-
-El bot está diseñado para ser **completamente discreto**. Puedes controlarlo sin que el grupo sepa:
-
-### Opción 1: Scripts Rápidos
-```bash
-./activate.sh   # Activar bot
-./deactivate.sh # Desactivar bot
-./status.sh     # Ver estado
-```
-
-### Opción 2: Archivos de Control
-- **`bot-control.json`** - Configuración completa
-- **`bot-status.txt`** - Solo ACTIVE/INACTIVE
-- **Variables de entorno** - BOT_ACTIVE=true/false
-
-### Opción 3: Comandos Discretos (Opcional)
-Si habilitas los comandos, puedes usar:
-- `!on` - Activar discretamente
-- `!off` - Desactivar discretamente
-
-## ⚙️ Configuración
-
-### Configuración Básica
-Edita el archivo `config.js` para personalizar:
-- Mensaje de respuesta
-- Estado inicial del bot
-- Configuración de logs
-- Comandos opcionales
-
-### Grupo Específico
-Si quieres que el bot solo funcione en un grupo específico:
-
-1. Ejecuta el bot sin configurar `TARGET_GROUP_ID`
-2. Observa los logs para ver el ID del grupo
-3. Agrega ese ID en el archivo `.env`:
-   ```
-   TARGET_GROUP_ID=el_id_del_grupo@c.us
-   ```
-4. Reinicia el bot
-
-### Todos los Grupos
-Si quieres que funcione en todos los grupos, simplemente no configures `TARGET_GROUP_ID`.
-
-### Personalización Avanzada
-- **Mensaje de respuesta**: Cambia `responseMessage` en `config.js`
-- **Logs**: Configura `logging` para mostrar/ocultar información
-- **Comandos**: Deshabilita completamente con `ENABLE_COMMANDS=false`
-- **Mensajes**: Modifica los mensajes de respuesta en `messages`
-
-## 🔧 Desarrollo
-
-Para desarrollo con recarga automática:
-```bash
-npm run dev
-```
-
-## 📝 Logs
-
-El bot muestra logs detallados en la consola:
-- Cuando detecta un sticker
-- Cuando envía una respuesta
-- Estado de activación/desactivación
-- Errores de conexión
-
-## ⚠️ Notas Importantes
-
-- **Seguridad**: Nunca compartas tu sesión de WhatsApp
-- **Uso Responsable**: Usa el bot de manera responsable
-- **Discreción**: El bot está diseñado para ser discreto
-- **Backup**: Mantén una copia de seguridad de tu chat
-- **Baileys**: Usa la librería oficial de WhatsApp, más estable
-
-## 🐛 Solución de Problemas
-
-### Error de Conexión
-- Verifica tu conexión a internet
-- Asegúrate de que WhatsApp esté disponible
-
-### No Responde a Stickers
-- Verifica que el bot esté ACTIVADO con `./status.sh`
-- Confirma que estés en el grupo correcto
-- Revisa los logs en la consola
-
-### Error de Autenticación
-- Elimina el archivo `auth_info.json` si existe
-- Reinicia el bot y escanea el QR nuevamente
-
-### Comandos No Funcionan
-- Los comandos están deshabilitados por defecto
-- Para habilitarlos, agrega `ENABLE_COMMANDS=true` en `.env`
+---
 
 ## 📄 Licencia
 
-MIT License - Usa libremente para proyectos personales y comerciales. 
+[MIT](./LICENSE)
