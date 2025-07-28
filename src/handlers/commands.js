@@ -30,8 +30,8 @@ async function handleCommands(conversation, jid, sock, logger) {
     try {
       fs.writeFileSync(controlPath, JSON.stringify(controlData, null, 2));
       const reply = activate
-        ? '✅ Bot ACTIVADO discretamente'
-        : '❌ Bot DESACTIVADO discretamente';
+        ? '✅ Bot ACTIVADO'
+        : '❌ Bot DESACTIVADO';
       await sock.sendMessage(jid, { text: reply });
       logger.info(`🔄 Bot ${activate ? 'activado' : 'desactivado'} por comando en ${jid}`);
       return true;

@@ -138,7 +138,7 @@ async function startBot() {
     // Manejar mensajes
     sock.ev.on('messages.upsert', async ({ messages }) => {
         const msg = messages[0];
-        if (!msg.message || msg.key.fromMe) return;
+        if (!msg.message) return;
 
         const jid = msg.key.remoteJid;
         const tipo = Object.keys(msg.message)[0];

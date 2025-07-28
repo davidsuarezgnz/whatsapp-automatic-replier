@@ -20,7 +20,7 @@ function isGroup(jid) {
  */
 async function handleMessages(update, sock, logger) {
   const msg = update.messages[0];
-  if (!msg.message || msg.key.fromMe) return;
+  if (!msg.message) return;
 
   const jid = msg.key.remoteJid;
   // Solo grupos y, si se definió, el grupo objetivo
