@@ -18,7 +18,7 @@ module.exports = {
         keepAliveIntervalMs: 25_000,
         emitOwnEvents: false,
         markOnlineOnConnect: false,
-        browser: ['Bot WhatsApp', 'Chrome', '1.0.0']
+        browser: ['Bot WhatsApp', 'Chrome', '1.0.0'],
     },
     
     // Configuración de logs

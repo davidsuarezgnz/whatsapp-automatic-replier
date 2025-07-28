@@ -77,7 +77,7 @@ async function startBot() {
         keepAliveIntervalMs: 25_000,
         emitOwnEvents: false,
         markOnlineOnConnect: false,
-        browser: ['Bot WhatsApp', 'Chrome', '1.0.0']
+        browser: ['Bot WhatsApp', 'Chrome', '1.0.0'],
     });
 
     // Guardar credenciales cuando se actualicen
@@ -202,7 +202,10 @@ async function startBot() {
                 };
                 fs.writeFileSync('bot-control.json', JSON.stringify(controlData, null, 2));
                 
-                await sock.sendMessage(jid, { text: '✅ Bot ACTIVADO discretamente' });
+                // Actualizar bot-status.txt
+                fs.writeFileSync('bot-status.txt', 'ACTIVE');
+
+                await sock.sendMessage(jid, { text: '✅ Bot ACTIVADO' });
                 console.log('🔄 Bot activado por comando en grupo');
                 return;
             }
@@ -216,7 +219,10 @@ async function startBot() {
                 };
                 fs.writeFileSync('bot-control.json', JSON.stringify(controlData, null, 2));
                 
-                await sock.sendMessage(jid, { text: '❌ Bot DESACTIVADO discretamente' });
+                // Actualizar bot-status.txt
+                fs.writeFileSync('bot-status.txt', 'INACTIVE');
+
+                await sock.sendMessage(jid, { text: '❌ Bot DESACTIVADO' });
                 console.log('🔄 Bot desactivado por comando en grupo');
                 return;
             }
