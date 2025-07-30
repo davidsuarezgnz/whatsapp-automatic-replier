@@ -1,127 +1,226 @@
-# WhatsApp Auto Bot
+# 🤖 WhatsApp Auto Replier Bot
 
-Bot de WhatsApp automático para responder con un mensaje (por defecto **YO**) al recibir un sticker en un grupo específico.
-
----
-
-## 📖 Descripción
-
-Este proyecto implementa un bot de WhatsApp usando la librería [Baileys](https://github.com/whiskeysockets/baileys) para:
-
-- Detectar stickers en un grupo de WhatsApp.
-- Responder automáticamente con un texto configurado (por defecto `YO`).
-- Permitir activar o desactivar el bot desde el grupo o desde un chat privado de administrador.
-- Mantener configuración en archivos JSON/TXT y variables de entorno.
+Bot automático de WhatsApp que responde con un mensaje personalizado cuando detecta stickers en grupos específicos.
 
 ---
 
-## ⚙️ Requisitos
+## 📋 Descripción
 
-- **Node.js** v16 o superior.
-- **npm**.
-- Cuenta de WhatsApp configurada con Scanner QR (a través de Baileys).
-- Acceso a la terminal/bash.
+Este bot utiliza la librería [Baileys](https://github.com/whiskeysockets/baileys) para:
 
----
-
-## 🛠️ Instalación
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/whatsapp-auto-bot.git
-   cd whatsapp-auto-bot
-   ```
-2. Ejecuta el script de setup:
-   ```bash
-   npm run setup
-   ```
+- **Detectar stickers** automáticamente en grupos de WhatsApp configurados
+- **Responder** con un mensaje personalizado (por defecto "YO")
+- **Control remoto** mediante comandos `!on` y `!off` desde el grupo o chat privado
+- **Configuración flexible** a través de archivos de configuración
+- **Reconexión automática** si se pierde la conexión
+- **Logs detallados** para monitoreo y debugging
 
 ---
 
-## 🗂️ Estructura del proyecto
+## ⚙️ Requisitos del Sistema
 
+- **Node.js** v16 o superior
+- **npm** (incluido con Node.js)
+- **Cuenta de WhatsApp** activa
+- **Acceso a terminal/consola**
+
+---
+
+## 🚀 Instalación Rápida
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/tu-usuario/whatsapp-automatic-replier.git
+cd whatsapp-automatic-replier
 ```
-|-- .wwebjs_auth/        # Credenciales de WhatsApp (Gitignored)
-|-- bot-control.json     # Configuración dinámica (isActive, message…)
-|-- bot-status.txt       # Estado ACTIVE/INACTIVE
-|-- .env.example         # Ejemplo de variables de entorno
-|-- package.json
-|-- README.md
-|-- src/
-|   |-- config/loader.js     # Carga y recarga de config
-|   |-- handlers/
-|   |   |-- connection.js    # Reconexión y logs
-|   |   |-- commands.js      # !on / !off
-|   |   `-- messages.js      # Lógica de sticker → respuesta
-|   |-- services/whatsapp.js # Wrapper de Baileys
-|   |-- utils/logger.js      # Logger con pino
-|   `-- index.js             # Entrypoint del bot
-|-- scripts/
-    |-- activate.sh
-    |-- deactivate.sh
-    |-- setup.sh
-    |-- start.sh
-    `-- status.sh
+
+### 2. Configuración automática
+```bash
+npm run setup
+```
+
+### 3. Configurar variables de entorno
+Edita el archivo `.env` creado:
+```env
+# Mensaje de respuesta al sticker
+BOT_RESPONSE_MESSAGE=YO
+
+# ID del grupo y JID de administrador (separados por coma)
+TARGET_GROUP_ID=1234567890-0987654321@g.us,5511991234567@s.whatsapp.net
+
+# Habilitar comandos !on/!off
+ENABLE_COMMANDS=true
+
+# Nivel de logs
+LOG_LEVEL=info
+```
+
+### 4. Iniciar el bot
+```bash
+npm start
 ```
 
 ---
 
-## 📑 Configuración
+## 📁 Estructura del Proyecto
 
-Copia `.env.example` a `.env` y completa los valores:
+```
+whatsapp-automatic-replier/
+├── auth_info_baileys/     # Credenciales de WhatsApp
+├── src/
+│   ├── config/
+│   │   └── loader.js      # Carga de configuración
+│   ├── handlers/
+│   │   ├── commands.js    # Comandos !on/!off
+│   │   ├── connection.js  # Gestión de conexión
+│   │   └── messages.js    # Lógica de stickers
+│   ├── services/
+│   │   └── whatsapp.js    # Cliente de Baileys
+│   ├── utils/
+│   │   └── logger.js      # Sistema de logs
+│   └── index.js           # Punto de entrada
+├── scripts/               # Scripts de control
+├── .env                   # Variables de entorno
+├── bot-control.json       # Configuración dinámica
+├── bot-status.txt         # Estado del bot
+└── package.json
+```
 
-```dotenv
-# ¿El bot inicia activo? true|false
-BOT_ACTIVE=true
+---
 
+## 🎮 Comandos Disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm start` | Inicia el bot |
+| `npm run activate` | Activa el bot |
+| `npm run deactivate` | Desactiva el bot |
+| `npm run status` | Muestra el estado actual |
+| `npm run logs` | Muestra logs en tiempo real |
+| `npm run setup` | Configuración inicial |
+
+---
+
+## 🔧 Configuración Detallada
+
+### Variables de Entorno (.env)
+
+```env
 # Mensaje que envía al detectar un sticker
 BOT_RESPONSE_MESSAGE=YO
 
-# ID del grupo y JID admin separados por coma
+# ID del grupo y JID de administrador
+# Formato: groupJID,adminJID
 TARGET_GROUP_ID=1234567890-0987654321@g.us,5511991234567@s.whatsapp.net
 
-# Permitir comandos !on/!off en grupo o privado
+# Habilitar comandos en chat
 ENABLE_COMMANDS=true
 
 # Nivel de logs: debug|info|warn|error
 LOG_LEVEL=info
 ```
 
-- **TARGET_GROUP_ID**: formato `groupJID,adminJID`. Usa tu `groupJID` (p.ej. `1234567890-0987654321@g.us`) y tu número personal con sufijo `@s.whatsapp.net`.
+### Obtener IDs de WhatsApp
+
+1. **ID del Grupo**: Envía un mensaje al grupo y revisa los logs
+2. **JID de Administrador**: Tu número con formato `5511991234567@s.whatsapp.net`
 
 ---
 
-## 🚀 Scripts disponibles
+## 📱 Uso del Bot
 
-| Comando              | Descripción                                  |
-|----------------------|----------------------------------------------|
-| `npm run setup`      | Instala dependencias y prepara `.env`        |
-| `npm run start`      | Inicia el bot                                |
-| `npm run activate`   | Activa el bot (`ACTIVE` en bot-status.txt)   |
-| `npm run deactivate` | Desactiva el bot (`INACTIVE` en bot-status.txt) |
-| `npm run status`     | Muestra el estado actual del bot             |
+### Primer Uso
+1. Ejecuta `npm start`
+2. Escanea el código QR con WhatsApp
+3. El bot se conectará automáticamente
+
+### Control del Bot
+- **Activar**: `npm run activate` o enviar `!on` al grupo
+- **Desactivar**: `npm run deactivate` o enviar `!off` al grupo
+- **Estado**: `npm run status`
+
+### Funcionamiento
+- El bot detecta stickers en el grupo configurado
+- Responde automáticamente con el mensaje configurado
+- Solo responde cuando está activo
+- Los comandos funcionan desde el grupo o chat privado del admin
 
 ---
 
-## 📦 Uso
+## 🛠️ Solución de Problemas
 
-1. **Inicia** el bot:
-   ```bash
-   npm run start
-   ```
-2. **Escanea** el QR si es la primera vez.
-3. Envía un sticker en el grupo configurado.
-4. El bot responderá con el mensaje configurado.
-5. Para **activar/desactivar**, usa `!on` o `!off` en el grupo o envía estos comandos en tu chat privado de administrador.
+### Error de Conexión
+```bash
+npm run logs
+```
+Revisa los logs para identificar el problema.
+
+### Reiniciar Autenticación
+```bash
+rm -rf auth_info_baileys/
+npm start
+```
+
+### Actualizar Dependencias
+```bash
+npm install
+```
+
+---
+
+## 📊 Monitoreo
+
+### Ver Logs en Tiempo Real
+```bash
+npm run logs
+```
+
+### Ver Estado del Bot
+```bash
+npm run status
+```
+
+### Archivos de Control
+- `bot-status.txt`: Estado ACTIVE/INACTIVE
+- `bot-control.json`: Configuración dinámica
+- `auth_info_baileys/`: Credenciales de WhatsApp
 
 ---
 
 ## 🤝 Contribuciones
 
-Si quieres mejorar este proyecto, abre un _issue_ o _pull request_. ¡Todas las contribuciones son bienvenidas!
+¡Las contribuciones son bienvenidas! Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ---
 
 ## 📄 Licencia
 
-[MIT](./LICENSE)
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+## 📞 Soporte
+
+Si tienes problemas o preguntas:
+
+1. Revisa la sección de [Solución de Problemas](#solución-de-problemas)
+2. Consulta los [logs](#monitoreo) para más detalles
+3. Abre un issue en GitHub
+
+---
+
+## 🔄 Actualizaciones
+
+Para actualizar el bot:
+
+```bash
+git pull origin main
+npm install
+npm start
+```
