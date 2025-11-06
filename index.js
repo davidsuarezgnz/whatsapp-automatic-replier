@@ -1,4 +1,4 @@
-const { default: makeWASocket, DisconnectReason, useMultiFileAuthState } = require('@whiskeysockets/baileys');
+const { default: makeWASocket, DisconnectReason, useMultiFileAuthState, fetchLatestWaWebVersion } = require('@whiskeysockets/baileys');
 const { Boom } = require('@hapi/boom');
 const fs = require('fs');
 const path = require('path');
@@ -8,7 +8,7 @@ require('dotenv').config();
 // Función para leer el estado del bot desde archivos externos
 function getBotState() {
     let isActive = true;
-    let responseMessage = 'YO';
+    let responseMessage = 'Yo';
     
     // Opción 1: Leer desde bot-control.json
     try {
@@ -69,6 +69,11 @@ async function startBot() {
     
     // Usar autenticación multi-archivo
     const { state, saveCreds } = await useMultiFileAuthState(authDir);
+
+    // Obtén la versión oficial de WhatsApp Web
+    // const { version } = await fetchLatestWaWebVersion();
+    // Si quieres imitar exactamente el browser de tu Chrome/Edge, define aquí:
+    // const browser = ['Win32','Chrome','138.0.0.0']; // pon tus valores reales de navigator.platform / UA
     
     const sock = makeWASocket({
         auth: state,
@@ -77,8 +82,7 @@ async function startBot() {
         keepAliveIntervalMs: 25_000,
         emitOwnEvents: false,
         markOnlineOnConnect: false,
-        browser: ['Bot WhatsApp', 'Chrome', '1.0.0'],
-    });
+      });
 
     // Guardar credenciales cuando se actualicen
     sock.ev.on('creds.update', saveCreds);

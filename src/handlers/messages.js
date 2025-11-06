@@ -36,7 +36,21 @@ async function handleMessages(update, sock, logger) {
   // 2) Responder automáticamente al sticker si el bot está activo
   if (isActive && msg.message.stickerMessage) {
     try {
-      await sock.sendMessage(jid, { text: responseMessage });
+      // Obtener metadatos del grupo para verificar si tiene mensajes temporales
+      const meta = await sock.groupMetadata(jid);
+      const expiration = meta.ephemeralDuration || 0;
+
+      // Construir el mensaje efímero si el grupo tiene expiración activa
+      const content = expiration > 0
+        ? {
+            ephemeralMessage: {
+              message: { text: responseMessage },
+              expiration
+            }
+          }
+        : { text: responseMessage };
+
+      await sock.sendMessage(jid, content);
       logger.info(`✅ Respuesta automática enviada: "${responseMessage}" en ${jid}`);
     } catch (err) {
       logger.error('❌ Error al enviar respuesta automática:', err);

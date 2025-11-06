@@ -8,7 +8,7 @@ module.exports = {
     isActive: true,
     
     // Mensaje de respuesta automática
-    responseMessage: 'YO',
+    responseMessage: 'Yo',
     
     // Configuración de Baileys
     baileys: {

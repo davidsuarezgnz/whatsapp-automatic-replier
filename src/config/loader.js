@@ -6,7 +6,7 @@ require('dotenv').config();
 // Configuración por defecto
 let config = {
   isActive: true,
-  responseMessage: 'YO',
+  responseMessage: 'Yo',
   targetGroupId: ''
 };
 
